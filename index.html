@@ -929,18 +929,323 @@
 
         /* 모바일 대응 */
         @media (max-width: 768px) {
-            .group-container { flex-direction: column; }
-            .card { border-right: none; border-bottom: 1px solid #222; }
-            .overlay-name { font-size: 3rem; letter-spacing: 10px; }
-            .overlay-role { font-size: 1rem; }
-            .overlay-reason { font-size: 1.1rem; line-height: 1.8; }
-            .overlay-content { left: 30px; bottom: 100px; }
-            .overlay-header { left: 30px; top: 30px; }
-            .overlay-logo-right { display: none; }
-            .overlay-bottom-bar { right: 30px; bottom: 20px; }
-            .overlay-category { padding: 8px 15px; }
-            .overlay-name-en { font-size: 1rem; }
-            .close-btn { top: 25px; right: 25px; width: 40px; height: 40px; font-size: 1.8rem; }
+            /* 헤더 */
+            header {
+                padding: 15px 10px;
+            }
+
+            h1 {
+                font-size: 1.1rem;
+                margin: 0 0 10px 0;
+            }
+
+            /* 탭 버튼 */
+            .tabs {
+                gap: 8px;
+                flex-wrap: wrap;
+                padding: 0 10px;
+            }
+
+            .tab-btn {
+                padding: 6px 16px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+
+            /* 카드 레이아웃 - 가로 스크롤 */
+            .group-container {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+                gap: 0;
+            }
+
+            /* 스크롤바 숨기기 */
+            .group-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            .card {
+                min-width: 100%;
+                max-width: 100%;
+                flex-shrink: 0;
+                border-right: none;
+                border-bottom: none;
+                scroll-snap-align: start;
+                min-height: 100%;
+            }
+
+            .card:hover {
+                flex: 1;
+            }
+
+            .card-info {
+                bottom: 30px;
+                padding: 20px 15px;
+            }
+
+            .card-name {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .card-role {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            /* 오버레이 상세 화면 */
+            .overlay::before {
+                top: 10px; left: 10px; right: 10px; bottom: 10px;
+            }
+
+            .overlay-name {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+                margin: 8px 0;
+            }
+
+            .overlay-role {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+
+            .overlay-reason {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                max-width: 100%;
+                padding-left: 12px;
+                border-left-width: 2px;
+            }
+
+            .overlay-content {
+                left: 15px;
+                right: 15px;
+                bottom: 70px;
+                max-width: calc(100% - 30px);
+            }
+
+            .overlay-header {
+                left: 15px;
+                top: 15px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .overlay-logo {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+
+            .overlay-title-badge {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+
+            .overlay-logo-right {
+                display: none;
+            }
+
+            .overlay-bottom-bar {
+                right: 15px;
+                bottom: 12px;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .overlay-bottom-bar .info-item {
+                font-size: 0.7rem;
+            }
+
+            .overlay-category {
+                padding: 6px 12px;
+            }
+
+            .overlay-name-en {
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+                margin-bottom: 12px;
+            }
+
+            .close-btn {
+                top: 12px;
+                right: 12px;
+                width: 36px;
+                height: 36px;
+                font-size: 1.5rem;
+            }
+
+            /* 인트로 화면 */
+            .intro-title {
+                font-size: 2rem;
+                letter-spacing: 6px;
+            }
+
+            .intro-subtitle {
+                font-size: 1rem;
+                letter-spacing: 3px;
+            }
+
+            .intro-category {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+                margin-top: 30px;
+                padding: 12px 24px;
+            }
+
+            /* 카테고리 전환 */
+            .category-transition-title {
+                font-size: 1.5rem;
+                letter-spacing: 5px;
+            }
+
+            /* 프레젠테이션 컨트롤 */
+            .presentation-start {
+                bottom: 20px;
+            }
+
+            .play-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            .control-panel {
+                bottom: 12px;
+                padding: 6px 16px;
+                gap: 8px;
+            }
+
+            .control-btn {
+                font-size: 1rem;
+                padding: 5px;
+            }
+
+            .slide-counter {
+                font-size: 0.75rem;
+                padding: 0 8px;
+            }
+
+            /* 스와이프 인디케이터 */
+            .swipe-indicator {
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.8rem;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(0, 0, 0, 0.6);
+                padding: 10px 20px;
+                border-radius: 25px;
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                opacity: 1;
+                transition: opacity 0.5s ease;
+                pointer-events: none;
+            }
+        }
+
+        /* 더 작은 모바일 화면 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 0.95rem;
+            }
+
+            .tab-btn {
+                padding: 5px 12px;
+                font-size: 0.75rem;
+            }
+
+            .card-name {
+                font-size: 1.3rem;
+            }
+
+            .card-role {
+                font-size: 0.8rem;
+            }
+
+            .overlay-name {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            .overlay-role {
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+
+            .overlay-reason {
+                font-size: 0.75rem;
+                line-height: 1.4;
+            }
+
+            .overlay-content {
+                bottom: 60px;
+                left: 12px;
+                right: 12px;
+            }
+
+            .overlay-logo {
+                font-size: 0.85rem;
+            }
+
+            .overlay-title-badge {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+            }
+
+            .intro-title {
+                font-size: 1.6rem;
+                letter-spacing: 4px;
+            }
+
+            .intro-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 2px;
+            }
+
+            .intro-category {
+                font-size: 1rem;
+                letter-spacing: 2px;
+                padding: 10px 18px;
+            }
+
+            .category-transition-title {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+
+            .play-btn {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 가로 모드 모바일 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .card {
+                min-height: 120px;
+            }
+
+            .overlay-content {
+                bottom: 50px;
+            }
+
+            .intro-title {
+                font-size: 2rem;
+            }
+
+            .intro-category {
+                margin-top: 30px;
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -964,6 +1269,11 @@
 
         <div id="members" class="group-container">
         </div>
+    </div>
+
+    <!-- 스와이프 인디케이터 (모바일 전용) -->
+    <div class="swipe-indicator" id="swipeIndicator" style="display: none;">
+        ← 좌우로 스와이프 →
     </div>
 
     <!-- 프레젠테이션 시작 버튼 -->
@@ -1636,6 +1946,70 @@
                 stopPresentation();
             }
         });
+    </script>
+
+    <!-- 모바일 스와이프 기능 스크립트 -->
+    <script>
+        // 모바일 감지 및 스와이프 인디케이터 표시
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+
+        function updateSwipeIndicator() {
+            const indicator = document.getElementById('swipeIndicator');
+            if (isMobile() && !overlay.classList.contains('active') && !presentationRunning) {
+                indicator.style.display = 'flex';
+                // 3초 후 자동 숨김
+                setTimeout(() => {
+                    indicator.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!presentationRunning) {
+                            indicator.style.display = 'none';
+                        }
+                    }, 500);
+                }, 3000);
+            } else {
+                indicator.style.display = 'none';
+            }
+        }
+
+        // 스와이프 터치 이벤트
+        let touchStarted = false;
+        document.querySelectorAll('.group-container').forEach(container => {
+            container.addEventListener('touchstart', () => {
+                touchStarted = true;
+                const indicator = document.getElementById('swipeIndicator');
+                indicator.style.opacity = '0';
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 500);
+            });
+        });
+
+        // 윈도우 리사이즈 시 업데이트
+        window.addEventListener('resize', updateSwipeIndicator);
+
+        // 페이지 로드 시 인디케이터 표시
+        window.addEventListener('load', () => {
+            setTimeout(updateSwipeIndicator, 1000);
+        });
+
+        // 탭 전환 시 인디케이터 재표시
+        const originalSwitchTab = switchTab;
+        switchTab = function(groupName) {
+            originalSwitchTab.call(this, groupName);
+            if (isMobile() && !touchStarted) {
+                const indicator = document.getElementById('swipeIndicator');
+                indicator.style.display = 'flex';
+                indicator.style.opacity = '1';
+                setTimeout(() => {
+                    indicator.style.opacity = '0';
+                    setTimeout(() => {
+                        indicator.style.display = 'none';
+                    }, 500);
+                }, 3000);
+            }
+        };
     </script>
 
     <!-- UnicornStudio 배경 스크립트 -->
