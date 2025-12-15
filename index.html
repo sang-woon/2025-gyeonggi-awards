@@ -588,54 +588,173 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+            background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 100%);
             z-index: 200;
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .intro-screen.active {
             display: flex;
-            animation: fadeIn 0.5s ease;
+            animation: epicFadeIn 1s ease;
+        }
+
+        /* 라이트 빔 효과 */
+        .intro-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, 
+                transparent 0deg, 
+                rgba(212, 175, 55, 0.03) 10deg, 
+                transparent 20deg,
+                transparent 90deg,
+                rgba(212, 175, 55, 0.05) 100deg,
+                transparent 110deg,
+                transparent 180deg,
+                rgba(212, 175, 55, 0.03) 190deg,
+                transparent 200deg,
+                transparent 270deg,
+                rgba(212, 175, 55, 0.04) 280deg,
+                transparent 290deg
+            );
+            animation: rotateBeam 20s linear infinite;
+            pointer-events: none;
+        }
+
+        /* 중앙 글로우 */
+        .intro-screen::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateBeam {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
         }
 
         .intro-title {
-            font-size: 3rem;
+            font-size: 5rem;
             color: var(--gold);
-            letter-spacing: 15px;
+            letter-spacing: 20px;
             margin-bottom: 20px;
             text-align: center;
-            animation: introFadeUp 1s ease 0.3s both;
+            animation: epicTitleIn 1.5s ease 0.3s both;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.8), 0 0 100px rgba(212, 175, 55, 0.4);
+            z-index: 1;
         }
 
         .intro-subtitle {
-            font-size: 1.5rem;
-            color: rgba(255,255,255,0.8);
-            letter-spacing: 5px;
-            animation: introFadeUp 1s ease 0.6s both;
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 8px;
+            animation: slideInUp 1s ease 0.8s both;
+            z-index: 1;
         }
 
         .intro-category {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #fff;
-            letter-spacing: 10px;
-            margin-top: 50px;
-            padding: 20px 50px;
+            letter-spacing: 15px;
+            margin-top: 60px;
+            padding: 25px 60px;
             border: 2px solid var(--gold);
-            animation: introFadeUp 1s ease 0.9s both, gold-glow 2s ease-in-out infinite;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, transparent 50%, rgba(212, 175, 55, 0.2) 100%);
+            animation: categoryReveal 1.2s ease 1.3s both, borderGlow 2s ease-in-out infinite 2.5s;
+            z-index: 1;
+            position: relative;
         }
 
-        @keyframes introFadeUp {
+        .intro-category::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold), transparent, var(--gold));
+            z-index: -1;
+            opacity: 0;
+            animation: shimmer 2s ease 2s both;
+        }
+
+        @keyframes epicFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes epicTitleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+                filter: blur(20px);
+            }
+            50% {
+                opacity: 1;
+                filter: blur(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes categoryReveal {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            50% {
+                transform: scaleX(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(212, 175, 55, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), inset 0 0 40px rgba(212, 175, 55, 0.2), 0 0 80px rgba(212, 175, 55, 0.3);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0; background-position: -200% 0; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0; background-position: 200% 0; }
         }
 
         /* 카테고리 전환 화면 */
@@ -645,24 +764,167 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 100%);
+            background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 100%);
             z-index: 200;
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .category-transition.active {
             display: flex;
-            animation: fadeIn 0.5s ease;
+            animation: epicFadeIn 0.5s ease;
+        }
+
+        /* 전환 화면 광선 효과 */
+        .category-transition::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            animation: lineExpand 0.8s ease 0.2s both;
+            transform: translate(-50%, -50%);
+        }
+
+        .category-transition::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 60%);
+            animation: expandPulse 1.5s ease both;
+            pointer-events: none;
+        }
+
+        @keyframes lineExpand {
+            0% { width: 0; opacity: 0; }
+            50% { width: 80%; opacity: 1; }
+            100% { width: 100%; opacity: 0; }
+        }
+
+        @keyframes expandPulse {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
         }
 
         .category-transition-title {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             color: var(--gold);
-            letter-spacing: 10px;
-            animation: introFadeUp 0.8s ease both;
+            letter-spacing: 15px;
+            animation: epicTitleIn 1s ease 0.3s both;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.8);
+            z-index: 1;
+        }
+
+        /* 슬라이드 전환 효과 개선 */
+        .overlay.slide-transition {
+            animation: slideTransition 0.8s ease-out;
+        }
+
+        @keyframes slideTransition {
+            0% {
+                opacity: 0;
+                transform: scale(1.1);
+                filter: brightness(2) blur(10px);
+            }
+            50% {
+                filter: brightness(1.5) blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: brightness(1) blur(0);
+            }
+        }
+
+        /* 파티클 효과 */
+        .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 201;
+            box-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold);
+        }
+
+        @keyframes particleBurst {
+            0% {
+                opacity: 1;
+                transform: scale(1) translate(0, 0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) translate(calc((Math.random() - 0.5) * 200px), calc((Math.random() - 0.5) * 200px));
+            }
+        }
+
+        /* 인트로 파티클 컨테이너 */
+        .intro-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .intro-particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+
+        @keyframes floatParticle {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20vh) scale(1);
+            }
+        }
+
+        /* 플래시 효과 */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 300;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .flash-overlay.active {
+            animation: flashEffect 0.5s ease-out;
+        }
+
+        @keyframes flashEffect {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
         }
 
         /* 모바일 대응 */
@@ -727,8 +989,12 @@
         <button class="control-btn" onclick="stopPresentation()" title="종료">⏹</button>
     </div>
 
+    <!-- 플래시 효과 -->
+    <div class="flash-overlay" id="flashOverlay"></div>
+
     <!-- 인트로 화면 -->
     <div class="intro-screen" id="introScreen">
+        <div class="intro-particles" id="introParticles"></div>
         <div class="intro-title">🏆 2025</div>
         <div class="intro-subtitle">경기도청 3개 노동조합 선정</div>
         <div class="intro-category" id="introCategoryText">존경받는 간부공무원</div>
@@ -1145,10 +1411,44 @@
             document.getElementById('introCategoryText').textContent = '존경받는 간부공무원';
             intro.classList.add('active');
             
+            // 인트로 파티클 생성
+            createIntroParticles();
+            
             setTimeout(() => {
-                intro.classList.remove('active');
-                showSlide(0);
-            }, INTRO_DURATION);
+                // 플래시 효과
+                triggerFlash();
+                
+                setTimeout(() => {
+                    intro.classList.remove('active');
+                    showSlide(0);
+                }, 300);
+            }, INTRO_DURATION - 300);
+        }
+        
+        // 인트로 파티클 생성
+        function createIntroParticles() {
+            const container = document.getElementById('introParticles');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'intro-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (2 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (3 + Math.random() * 2) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // 플래시 효과
+        function triggerFlash() {
+            const flash = document.getElementById('flashOverlay');
+            flash.classList.remove('active');
+            void flash.offsetWidth;
+            flash.classList.add('active');
         }
         
         // 카테고리 전환 화면
@@ -1158,9 +1458,14 @@
             transition.classList.add('active');
             
             setTimeout(() => {
-                transition.classList.remove('active');
-                showSlide(presentationIndex);
-            }, TRANSITION_DURATION);
+                // 플래시 효과
+                triggerFlash();
+                
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                    showSlide(presentationIndex);
+                }, 300);
+            }, TRANSITION_DURATION - 300);
         }
         
         // 슬라이드 표시
@@ -1173,8 +1478,16 @@
             // 카운터 업데이트
             document.getElementById('currentSlide').textContent = index + 1;
             
+            // 전환 효과 추가
+            overlay.classList.remove('slide-transition');
+            void overlay.offsetWidth; // 리플로우 트리거
+            overlay.classList.add('slide-transition');
+            
             // 오버레이 열기
             openOverlay(person.name, person.role, person.photo, person.reason, person.category);
+            
+            // 파티클 효과
+            createTransitionParticles();
             
             // 프로그레스 바 시작
             startProgress();
@@ -1182,6 +1495,26 @@
             // 다음 슬라이드 타이머
             if (!presentationPaused) {
                 scheduleNextSlide();
+            }
+        }
+        
+        // 전환 파티클 효과
+        function createTransitionParticles() {
+            const container = document.getElementById('sparkle-container');
+            if (!container) return;
+            
+            // 추가 파티클 생성
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'gold-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `particleBurst ${1 + Math.random()}s ease-out forwards`;
+                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                container.appendChild(particle);
+                
+                // 애니메이션 후 제거
+                setTimeout(() => particle.remove(), 2000);
             }
         }
         
