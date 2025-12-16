@@ -197,6 +197,55 @@
             animation: cardFloat 6s ease-in-out infinite;
         }
 
+        /* 메인월 카드: 기본 프레임/광택(과하지 않게) */
+        .mainwall-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* 시작 직후 3초 쇼케이스용 쉬머/펄스 */
+        body.mainwall-showcase .mainwall-card {
+            box-shadow: 0 0 0 rgba(212,175,55,0.0);
+            animation: cardFloat 6s ease-in-out infinite, mainwallPulse 1.6s ease-in-out infinite;
+        }
+
+        body.mainwall-showcase .mainwall-card::after {
+            content: '';
+            position: absolute;
+            inset: -40% -60%;
+            background: linear-gradient(120deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.05) 35%,
+                rgba(212, 175, 55, 0.18) 50%,
+                rgba(212, 175, 55, 0.05) 65%,
+                transparent 100%);
+            transform: translateX(-60%) rotate(10deg);
+            animation: mainwallShimmer 1.2s ease-in-out infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        body.mainwall-showcase .mainwall-photo {
+            filter: grayscale(10%) brightness(0.85) saturate(1.05);
+        }
+
+        @keyframes mainwallShimmer {
+            0% { transform: translateX(-60%) rotate(10deg); opacity: 0; }
+            15% { opacity: 0.9; }
+            50% { opacity: 0.9; }
+            100% { transform: translateX(60%) rotate(10deg); opacity: 0; }
+        }
+
+        @keyframes mainwallPulse {
+            0%, 100% { box-shadow: 0 0 14px rgba(212,175,55,0.10), 0 0 30px rgba(212,175,55,0.06); }
+            50% { box-shadow: 0 0 26px rgba(212,175,55,0.18), 0 0 70px rgba(212,175,55,0.10); }
+        }
+
         .mainwall-card:nth-child(odd) {
             animation-delay: 0s;
         }
@@ -2034,9 +2083,10 @@
         };
 
         // 설정
+        const MAINWALL_SHOWCASE_DURATION = 3000; // 시작 후 메인월 3초 쇼케이스
         const INTRO_DURATION = 4000;
         const MONTAGE_DURATION = 2000; // 2초
-        const SPOTLIGHT_DURATION = 5000; // 각 인물 5초
+        const SPOTLIGHT_DURATION = 2000; // 각 인물 2초
         const ENDCARD_DURATION = 3000;
 
         // 전체 10명 데이터 (간부 5명 + 도의원 5명)
@@ -2062,6 +2112,7 @@
             allPeopleData.forEach((person, index) => {
                 const card = document.createElement('div');
                 card.className = 'mainwall-card';
+                card.style.setProperty('--i', index);
                 card.innerHTML = `
                     <div class="mainwall-photo" style="background-image: url('${person.photo}');"></div>
                     <div class="mainwall-info">
@@ -2242,12 +2293,21 @@
             document.getElementById('totalSlides').textContent = allPeopleData.length;
             document.getElementById('currentSlide').textContent = '1';
 
-            // 기존 UI 숨기기
-            document.body.classList.remove('mainwall-mode');
+            // 메인월 3초 쇼케이스(화려하게) → 스포트라이트(2초/인)
+            sceneState.current = 'mainwall';
+            document.body.classList.add('mainwall-mode');
+            document.body.classList.add('mainwall-showcase');
+            triggerFlash();
+            setTimeout(() => triggerRadialBloom(), 150);
 
-            // 인트로 시작
-            sceneState.current = 'intro';
-            showIntro();
+            clearTimeout(sceneState.timer);
+            sceneState.timer = setTimeout(() => {
+                if (!sceneState.running || sceneState.paused) return;
+                document.body.classList.remove('mainwall-showcase');
+                document.body.classList.remove('mainwall-mode');
+                sceneState.current = 'spotlight';
+                showSpotlight(0);
+            }, MAINWALL_SHOWCASE_DURATION);
         }
         
         // ========== 인트로 화면 ==========
