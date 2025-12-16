@@ -1841,6 +1841,41 @@
 
         /* 모바일 대응 */
         @media (max-width: 768px) {
+            /* 모바일에서 터치 스크롤 개선 */
+            body {
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y pinch-zoom;
+            }
+
+            /* 터치 타겟 최소 크기 확보 (44x44px) */
+            button, .tab-btn, .card, .close-btn, .control-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            /* 모바일 성능 최적화 */
+            .card-photo, .mainwall-photo, .overlay {
+                will-change: transform;
+                transform: translateZ(0);
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+
+            /* 애니메이션 최적화 - GPU 가속 */
+            .sparkle, .mainwall-card, .card {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+
+            /* 모바일에서 복잡한 애니메이션 단순화 */
+            @media (prefers-reduced-motion: reduce) {
+                *, *::before, *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+            }
+
             /* 헤더 */
             header {
                 padding: 15px 10px;
@@ -2063,6 +2098,102 @@
                 transition: opacity 0.5s ease;
                 pointer-events: none;
             }
+
+            /* MainWall 모드 모바일 최적화 */
+            body.mainwall-mode .mainwall-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(5, 1fr);
+                padding: 15px 10px;
+                gap: 10px;
+            }
+
+            .mainwall-card {
+                border-radius: 8px;
+            }
+
+            .mainwall-name {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                margin-bottom: 5px;
+            }
+
+            .mainwall-role {
+                font-size: 0.85rem;
+                letter-spacing: 0.5px;
+            }
+
+            .mainwall-info {
+                padding: 12px;
+            }
+
+            /* 프레젠테이션 모드 요소들 */
+            .spotlight-overlay .spotlight-name {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .spotlight-overlay .spotlight-role {
+                font-size: 1.1rem;
+                letter-spacing: 1px;
+            }
+
+            .spotlight-overlay .spotlight-reason {
+                font-size: 0.9rem;
+                line-height: 1.5;
+                padding-left: 12px;
+                max-width: 90%;
+            }
+
+            .spotlight-overlay .spotlight-content {
+                left: 15px;
+                right: 15px;
+                bottom: 80px;
+            }
+
+            /* 프로그레스 바 */
+            .progress-bar {
+                bottom: 50px;
+                left: 15px;
+                right: 15px;
+                height: 3px;
+            }
+
+            /* 몽타주 오버레이 */
+            .montage-overlay .montage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(5, 1fr);
+                padding: 15px 10px;
+                gap: 8px;
+            }
+
+            .montage-photo-wrapper {
+                border-radius: 6px;
+            }
+
+            .montage-name {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+
+            .montage-role {
+                font-size: 0.7rem;
+            }
+
+            /* 엔드카드 */
+            .endcard-title {
+                font-size: 1.8rem;
+                letter-spacing: 3px;
+            }
+
+            .endcard-subtitle {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .endcard-message {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
         }
 
         /* 더 작은 모바일 화면 */
@@ -2139,6 +2270,60 @@
                 padding: 8px 20px;
                 font-size: 0.85rem;
             }
+
+            /* MainWall 모드 작은 모바일 */
+            .mainwall-name {
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+            }
+
+            .mainwall-role {
+                font-size: 0.75rem;
+            }
+
+            .mainwall-info {
+                padding: 8px;
+            }
+
+            /* 프레젠테이션 스포트라이트 */
+            .spotlight-overlay .spotlight-name {
+                font-size: 1.6rem;
+                letter-spacing: 1px;
+            }
+
+            .spotlight-overlay .spotlight-role {
+                font-size: 0.95rem;
+            }
+
+            .spotlight-overlay .spotlight-reason {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+
+            /* 몽타주 */
+            .montage-name {
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+            }
+
+            .montage-role {
+                font-size: 0.6rem;
+            }
+
+            /* 엔드카드 */
+            .endcard-title {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+
+            .endcard-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+
+            .endcard-message {
+                font-size: 0.8rem;
+            }
         }
 
         /* 가로 모드 모바일 */
@@ -2158,6 +2343,31 @@
             .intro-category {
                 margin-top: 30px;
                 font-size: 1.3rem;
+            }
+
+            /* MainWall 가로모드: 3x4 또는 4x3 레이아웃 */
+            body.mainwall-mode .mainwall-container {
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                padding: 10px 15px;
+                gap: 8px;
+            }
+
+            .mainwall-name {
+                font-size: 1rem;
+            }
+
+            .mainwall-role {
+                font-size: 0.8rem;
+            }
+
+            /* 스포트라이트 가로모드 */
+            .spotlight-overlay .spotlight-content {
+                bottom: 60px;
+            }
+
+            .spotlight-overlay .spotlight-reason {
+                max-width: 80%;
             }
         }
     </style>
