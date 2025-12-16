@@ -165,7 +165,8 @@
             box-sizing: border-box;
         }
 
-        .mainwall-container.active {
+        /* MainWall은 body의 mainwall-mode로만 표시/숨김 제어 (깜빡임 방지) */
+        body.mainwall-mode .mainwall-container {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(2, 1fr);
@@ -1614,7 +1615,7 @@
     </div>
 
     <!-- MainWall: 10명 그리드 -->
-    <div class="mainwall-container active" id="mainwallContainer">
+    <div class="mainwall-container" id="mainwallContainer">
         <!-- 동적으로 생성됨 -->
     </div>
 
@@ -2041,8 +2042,6 @@
                 `;
                 container.appendChild(card);
             });
-            
-            container.classList.add('active');
         }
 
         // ========== SceneB: MontageSweep (2초) ==========
@@ -2174,7 +2173,6 @@
             document.getElementById('controlPanel').classList.remove('active');
             document.getElementById('progressContainer').classList.remove('active');
             document.body.classList.add('mainwall-mode');
-            document.getElementById('mainwallContainer').classList.add('active');
             sceneState.current = 'mainwall';
         }
 
@@ -2211,7 +2209,6 @@
 
             // 기존 UI 숨기기
             document.body.classList.remove('mainwall-mode');
-            document.getElementById('mainwallContainer').classList.remove('active');
 
             // 인트로 시작
             sceneState.current = 'intro';
