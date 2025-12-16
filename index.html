@@ -159,7 +159,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 15;
             display: none;
             padding: 80px 60px;
             box-sizing: border-box;
@@ -170,6 +170,12 @@
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(2, 1fr);
             gap: 20px;
+        }
+
+        /* MainWall 활성화 시 header와 content-area 숨김 */
+        body.mainwall-mode header,
+        body.mainwall-mode .content-area {
+            display: none !important;
         }
 
         .mainwall-card {
@@ -2172,8 +2178,7 @@
             document.getElementById('startPresentation').classList.remove('hidden');
             document.getElementById('controlPanel').classList.remove('active');
             document.getElementById('progressContainer').classList.remove('active');
-            document.querySelector('header').style.display = '';
-            document.querySelector('.content-area').style.display = '';
+            document.body.classList.add('mainwall-mode');
             document.getElementById('mainwallContainer').classList.add('active');
             sceneState.current = 'mainwall';
         }
@@ -2210,8 +2215,7 @@
             document.getElementById('currentSlide').textContent = '1';
 
             // 기존 UI 숨기기
-            document.querySelector('header').style.display = 'none';
-            document.querySelector('.content-area').style.display = 'none';
+            document.body.classList.remove('mainwall-mode');
             document.getElementById('mainwallContainer').classList.remove('active');
 
             // 인트로 시작
@@ -2326,8 +2330,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             initMainWall();
             // 초기 로드 시 MainWall을 기본 화면으로 표시
-            document.querySelector('header').style.display = 'none';
-            document.querySelector('.content-area').style.display = 'none';
+            document.body.classList.add('mainwall-mode');
             document.getElementById('mainwallContainer').classList.add('active');
         });
     </script>
