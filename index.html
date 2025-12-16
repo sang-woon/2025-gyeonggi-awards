@@ -160,14 +160,21 @@
             width: 100%;
             height: 100%;
             z-index: 15;
-            display: none;
+            display: grid;
             padding: 80px 60px;
             box-sizing: border-box;
         }
 
-        /* MainWall은 body의 mainwall-mode로만 표시/숨김 제어 (깜빡임 방지) */
+        /* 프레젠테이션 진행 중(= mainwall-mode 해제)에는 MainWall 숨김 */
+        body:not(.mainwall-mode) .mainwall-container {
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* MainWall 모드에서는 그리드 레이아웃 유지 */
         body.mainwall-mode .mainwall-container {
-            display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(2, 1fr);
             gap: 20px;
