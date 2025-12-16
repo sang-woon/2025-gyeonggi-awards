@@ -2383,7 +2383,7 @@
 
         // 탭 전환 시 인디케이터 재표시
         const originalSwitchTab = switchTab;
-        switchTab = function(groupName) {
+        window.switchTab = function(groupName) {
             originalSwitchTab.call(this, groupName);
             if (isMobile() && !touchStarted) {
                 const indicator = document.getElementById('swipeIndicator');
