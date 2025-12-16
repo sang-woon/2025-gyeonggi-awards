@@ -526,15 +526,30 @@
             background: #000;
             z-index: 300;
             pointer-events: none;
-        }
-
-        .curtain-wipe.left {
-            animation: curtainLeft 1s ease-in-out;
+            /* 기본은 완전 숨김(로드 시 화면을 덮지 않게) */
+            opacity: 0;
+            transform: translateX(-100%);
         }
 
         .curtain-wipe.right {
             left: 50%;
-            animation: curtainRight 1s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        /* 전환 트리거 시에만 활성화 */
+        #curtainLeft.active,
+        #curtainRight.active {
+            opacity: 1;
+        }
+
+        #curtainLeft.active {
+            transform: translateX(0);
+            animation: curtainLeft 1s ease-in-out forwards;
+        }
+
+        #curtainRight.active {
+            transform: translateX(0);
+            animation: curtainRight 1s ease-in-out forwards;
         }
 
         @keyframes curtainLeft {
@@ -559,7 +574,14 @@
             background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
             z-index: 299;
             pointer-events: none;
-            animation: bloomExpand 1s ease-out;
+            /* 기본은 숨김 + 애니메이션 없음(로드 시 깜빡임 방지) */
+            opacity: 0;
+            animation: none;
+        }
+
+        .radial-bloom.active {
+            opacity: 1;
+            animation: bloomExpand 1s ease-out forwards;
         }
 
         @keyframes bloomExpand {
@@ -1637,8 +1659,8 @@
         <div class="end-card-subtitle">Thank You</div>
     </div>
 
-    <!-- 커튼 와이프 -->
-    <div class="curtain-wipe left" id="curtainLeft"></div>
+    <!-- 커튼 와이프 (기본 숨김, 전환 시에만 active) -->
+    <div class="curtain-wipe" id="curtainLeft"></div>
     <div class="curtain-wipe right" id="curtainRight"></div>
 
     <!-- 라디얼 블룸 -->
@@ -2187,18 +2209,24 @@
         function triggerCurtainWipe() {
             const left = document.getElementById('curtainLeft');
             const right = document.getElementById('curtainRight');
-            left.classList.remove('left');
-            right.classList.remove('right');
+            left.classList.remove('active');
+            right.classList.remove('active');
             void left.offsetWidth;
-            left.classList.add('left');
-            right.classList.add('right');
+            left.classList.add('active');
+            right.classList.add('active');
+            // 애니메이션 종료 후 리셋(다음 전환을 위해)
+            setTimeout(() => {
+                left.classList.remove('active');
+                right.classList.remove('active');
+            }, 1100);
         }
 
         function triggerRadialBloom() {
             const bloom = document.getElementById('radialBloom');
-            bloom.style.animation = 'none';
+            bloom.classList.remove('active');
             void bloom.offsetWidth;
-            bloom.style.animation = 'bloomExpand 1s ease-out';
+            bloom.classList.add('active');
+            setTimeout(() => bloom.classList.remove('active'), 1100);
         }
 
         // ========== 프레젠테이션 시작 ==========
