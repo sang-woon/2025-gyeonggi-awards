@@ -1986,9 +1986,16 @@
         }
 
         // 오버레이 열릴 때 반짝임 생성
-        const originalOpen = originalOpenOverlay;
-        originalOpenOverlay = function(name, role, photo, reason, category) {
-            originalOpen(name, role, photo, reason, category);
+        const originalOpenForSparkles = originalOpenOverlay;
+        window.openOverlayForSparkles = function(name, role, photo, reason, category) {
+            originalOpenForSparkles(name, role, photo, reason, category);
+            setTimeout(createSparkles, 100);
+        };
+        
+        // openOverlay를 래핑
+        const originalOpenOverlayWrapper = openOverlay;
+        openOverlay = function(name, role, photo, reason, category) {
+            originalOpenOverlayWrapper(name, role, photo, reason, category);
             setTimeout(createSparkles, 100);
         };
 
