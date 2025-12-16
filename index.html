@@ -152,6 +152,86 @@
             z-index: 5;
         }
 
+        /* ========== MainWall: 10명 그리드 (TV용) ========== */
+        .mainwall-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none;
+            padding: 80px 60px;
+            box-sizing: border-box;
+        }
+
+        .mainwall-container.active {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .mainwall-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            background: rgba(10, 10, 10, 0.9);
+            cursor: default;
+            transition: all 0.3s ease;
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+
+        .mainwall-card:nth-child(odd) {
+            animation-delay: 0s;
+        }
+
+        .mainwall-card:nth-child(even) {
+            animation-delay: 3s;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .mainwall-photo {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(30%) brightness(0.7);
+            transition: 0.5s;
+        }
+
+        .mainwall-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            text-align: center;
+        }
+
+        .mainwall-name {
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+        }
+
+        .mainwall-role {
+            font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        }
+
         .group-container {
             display: none; /* 기본 숨김 */
             width: 100%;
@@ -390,36 +470,131 @@
         }
 
         .overlay-name {
-            font-size: 8rem;
+            font-size: clamp(4rem, 12vw, 8rem);
             font-weight: 800;
             margin: 10px 0;
             line-height: 1;
             color: #fff;
-            letter-spacing: 30px;
+            letter-spacing: clamp(15px, 3vw, 30px);
             text-shadow: 0 5px 30px rgba(0,0,0,0.8), 0 0 60px rgba(212, 175, 55, 0.3);
         }
 
         .overlay-name-en {
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
             color: rgba(255,255,255,0.7);
             font-weight: 400;
-            letter-spacing: 8px;
+            letter-spacing: clamp(4px, 1vw, 8px);
             margin-bottom: 30px;
             font-style: italic;
         }
 
         .overlay-reason {
             font-family: 'Noto Sans KR', sans-serif;
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             font-weight: 500;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
             margin-top: 20px;
             line-height: 1.8;
             max-width: 700px;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+            text-shadow: 0 2px 15px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
             letter-spacing: 0.5px;
-            border-left: 3px solid var(--gold);
-            padding-left: 20px;
+            border-left: 4px solid var(--gold);
+            padding-left: 25px;
+        }
+
+        /* TV 최적화: 커튼 와이프 전환 */
+        .curtain-wipe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: #000;
+            z-index: 300;
+            pointer-events: none;
+        }
+
+        .curtain-wipe.left {
+            animation: curtainLeft 1s ease-in-out;
+        }
+
+        .curtain-wipe.right {
+            left: 50%;
+            animation: curtainRight 1s ease-in-out;
+        }
+
+        @keyframes curtainLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes curtainRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 센터 라디얼 블룸 */
+        .radial-bloom {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.8) 0%, transparent 70%);
+            z-index: 299;
+            pointer-events: none;
+            animation: bloomExpand 1s ease-out;
+        }
+
+        @keyframes bloomExpand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 200vw;
+                height: 200vh;
+                opacity: 0;
+            }
+        }
+
+        /* 엔딩 카드 */
+        .end-card {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #0d0d0d 0%, #000 100%);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .end-card.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .end-card-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--gold);
+            letter-spacing: clamp(10px, 2vw, 20px);
+            margin-bottom: 30px;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.8);
+            animation: introFadeUp 1s ease both;
+        }
+
+        .end-card-subtitle {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: rgba(255,255,255,0.8);
+            letter-spacing: clamp(5px, 1vw, 10px);
+            animation: introFadeUp 1s ease 0.3s both;
         }
 
         /* 하단 정보 바 */
@@ -856,6 +1031,122 @@
             pointer-events: none;
             z-index: 201;
             box-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold);
+        }
+
+        /* ========== MontageSweep: 2초 몽타주 ========== */
+        .montage-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 250;
+            display: none;
+            overflow: hidden;
+        }
+
+        .montage-overlay.active {
+            display: block;
+        }
+
+        .montage-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        .montage-item.active {
+            opacity: 1;
+            animation: montageSweep 0.2s ease-out;
+        }
+
+        .montage-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4);
+            z-index: 1;
+        }
+
+        .montage-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 10%;
+        }
+
+        .montage-scan-line {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(212, 175, 55, 0.3) 45%, 
+                rgba(212, 175, 55, 0.6) 50%, 
+                rgba(212, 175, 55, 0.3) 55%, 
+                transparent 100%);
+            animation: scanSweep 0.2s ease-out;
+        }
+
+        @keyframes scanSweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .montage-name {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.8), 0 0 100px rgba(212, 175, 55, 0.4);
+            animation: montageTextIn 0.2s ease-out;
+        }
+
+        .montage-role {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #fff;
+            letter-spacing: 8px;
+            font-weight: 700;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+            animation: montageTextIn 0.2s ease-out 0.05s both;
+        }
+
+        @keyframes montageSweep {
+            0% {
+                opacity: 0;
+                transform: scale(1.1);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes montageTextIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes particleBurst {
@@ -1316,6 +1607,29 @@
         <div class="category-transition-title" id="categoryTransitionText">의정활동 우수 도의원</div>
     </div>
 
+    <!-- MainWall: 10명 그리드 -->
+    <div class="mainwall-container" id="mainwallContainer">
+        <!-- 동적으로 생성됨 -->
+    </div>
+
+    <!-- MontageSweep: 2초 몽타주 -->
+    <div class="montage-overlay" id="montageOverlay">
+        <!-- 동적으로 생성됨 -->
+    </div>
+
+    <!-- 엔딩 카드 -->
+    <div class="end-card" id="endCard">
+        <div class="end-card-title">감사합니다</div>
+        <div class="end-card-subtitle">Thank You</div>
+    </div>
+
+    <!-- 커튼 와이프 -->
+    <div class="curtain-wipe left" id="curtainLeft"></div>
+    <div class="curtain-wipe right" id="curtainRight"></div>
+
+    <!-- 라디얼 블룸 -->
+    <div class="radial-bloom" id="radialBloom"></div>
+
     <div id="overlay" class="overlay">
         <!-- 반짝임 효과 레이어 -->
         <div class="sparkle-layer" id="sparkle-container"></div>
@@ -1676,62 +1990,249 @@
         createSparkles();
     </script>
 
-    <!-- 자동 프레젠테이션 스크립트 -->
+    <!-- TV용 영상형 프레젠테이션 스크립트 -->
     <script>
-        // 프레젠테이션 상태
-        let presentationRunning = false;
-        let presentationPaused = false;
-        let presentationIndex = 0;
-        let presentationTimer = null;
-        let progressTimer = null;
-        
+        // ========== Scene 컨트롤러 ==========
+        let sceneState = {
+            current: 'mainwall', // mainwall, intro, montage, spotlight, endcard
+            running: false,
+            paused: false,
+            spotlightIndex: 0,
+            timer: null,
+            progressTimer: null
+        };
+
         // 설정
-        const SLIDE_DURATION = 7000; // 각 슬라이드 7초
-        const INTRO_DURATION = 4000; // 인트로 4초
-        const TRANSITION_DURATION = 3000; // 카테고리 전환 3초
-        
-        // 전체 수상자 데이터
-        const allPresentationData = [
+        const INTRO_DURATION = 4000;
+        const MONTAGE_DURATION = 2000; // 2초
+        const SPOTLIGHT_DURATION = 5000; // 각 인물 5초
+        const ENDCARD_DURATION = 3000;
+
+        // 전체 10명 데이터 (간부 5명 + 도의원 5명)
+        const allPeopleData = [
             ...executivesData.map(p => ({...p, category: '존경받는 간부공무원'})),
             ...membersData.map(p => ({...p, category: '의정활동 우수 도의원'}))
         ];
-        
-        // 프레젠테이션 시작
-        function startPresentation() {
-            presentationRunning = true;
-            presentationPaused = false;
-            presentationIndex = 0;
+
+        // 사유 요약 함수 (TV용)
+        function summarizeReason(reason) {
+            const quotes = reason.split('<br>').filter(q => q.trim());
+            if (quotes.length >= 2) {
+                return quotes.slice(0, 2).join('<br>');
+            }
+            return quotes[0] || reason;
+        }
+
+        // ========== SceneA: MainWall 초기화 ==========
+        function initMainWall() {
+            const container = document.getElementById('mainwallContainer');
+            container.innerHTML = '';
             
+            allPeopleData.forEach((person, index) => {
+                const card = document.createElement('div');
+                card.className = 'mainwall-card';
+                card.innerHTML = `
+                    <div class="mainwall-photo" style="background-image: url('${person.photo}');"></div>
+                    <div class="mainwall-info">
+                        <div class="mainwall-name">${person.name}</div>
+                        <div class="mainwall-role">${person.role}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            
+            container.classList.add('active');
+        }
+
+        // ========== SceneB: MontageSweep (2초) ==========
+        function showMontage() {
+            const montageOverlay = document.getElementById('montageOverlay');
+            montageOverlay.innerHTML = '';
+            montageOverlay.classList.add('active');
+
+            allPeopleData.forEach((person, index) => {
+                const item = document.createElement('div');
+                item.className = 'montage-item';
+                item.innerHTML = `
+                    <div class="montage-photo" style="background-image: url('${person.photo}');"></div>
+                    <div class="montage-scan-line"></div>
+                    <div class="montage-content">
+                        <div class="montage-name">${person.name}</div>
+                        <div class="montage-role">${person.role}</div>
+                    </div>
+                `;
+                montageOverlay.appendChild(item);
+            });
+
+            // 2초 동안 순차 표시 (각 0.2초)
+            let montageIndex = 0;
+            const montageInterval = setInterval(() => {
+                const items = montageOverlay.querySelectorAll('.montage-item');
+                items.forEach(item => item.classList.remove('active'));
+                
+                if (montageIndex < items.length) {
+                    items[montageIndex].classList.add('active');
+                    montageIndex++;
+                } else {
+                    clearInterval(montageInterval);
+                    setTimeout(() => {
+                        montageOverlay.classList.remove('active');
+                        sceneState.current = 'spotlight';
+                        showSpotlight(0);
+                    }, 200);
+                }
+            }, 200);
+        }
+
+        // ========== SceneC: SpotlightSlides ==========
+        function showSpotlight(index) {
+            if (index >= allPeopleData.length) {
+                sceneState.current = 'endcard';
+                showEndCard();
+                return;
+            }
+
+            sceneState.spotlightIndex = index;
+            const person = allPeopleData[index];
+
+            // 카운터 업데이트
+            document.getElementById('currentSlide').textContent = index + 1;
+
+            // 전환 효과
+            triggerCurtainWipe();
+            setTimeout(() => triggerRadialBloom(), 200);
+
+            // 오버레이 업데이트
+            dName.innerText = person.name;
+            dNameSmall.innerText = person.name;
+            dRole.innerText = person.role;
+            dReason.innerHTML = summarizeReason(person.reason);
+            dCategory.innerText = person.category;
+            
+            if (person.category === '존경받는 간부공무원') {
+                dDept.innerText = '경기도청';
+            } else {
+                dDept.innerText = '경기도의회';
+            }
+            
+            overlay.style.backgroundImage = `url('${person.photo}')`;
+            overlay.classList.add('active');
+            overlay.classList.add('slide-transition');
+
+            // 프로그레스 바
+            startSpotlightProgress();
+
+            // 다음 슬라이드 예약
+            if (!sceneState.paused) {
+                clearTimeout(sceneState.timer);
+                sceneState.timer = setTimeout(() => {
+                    if (!sceneState.paused && sceneState.running) {
+                        overlay.classList.remove('active');
+                        setTimeout(() => showSpotlight(index + 1), 300);
+                    }
+                }, SPOTLIGHT_DURATION);
+            }
+        }
+
+        function startSpotlightProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = '0%';
+            
+            let progress = 0;
+            const interval = 50;
+            const increment = (interval / SPOTLIGHT_DURATION) * 100;
+            
+            clearInterval(sceneState.progressTimer);
+            sceneState.progressTimer = setInterval(() => {
+                if (sceneState.paused) return;
+                
+                progress += increment;
+                progressBar.style.width = Math.min(progress, 100) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(sceneState.progressTimer);
+                }
+            }, interval);
+        }
+
+        // ========== SceneD: EndCard ==========
+        function showEndCard() {
+            const endCard = document.getElementById('endCard');
+            endCard.classList.add('active');
+            
+            setTimeout(() => {
+                endCard.classList.remove('active');
+                sceneState.running = false;
+                resetToMainWall();
+            }, ENDCARD_DURATION);
+        }
+
+        function resetToMainWall() {
+            overlay.classList.remove('active');
+            document.getElementById('startPresentation').classList.remove('hidden');
+            document.getElementById('controlPanel').classList.remove('active');
+            document.getElementById('progressContainer').classList.remove('active');
+            document.querySelector('header').style.display = '';
+            document.querySelector('.content-area').style.display = '';
+            document.getElementById('mainwallContainer').classList.add('active');
+            sceneState.current = 'mainwall';
+        }
+
+        // ========== 전환 효과 ==========
+        function triggerCurtainWipe() {
+            const left = document.getElementById('curtainLeft');
+            const right = document.getElementById('curtainRight');
+            left.classList.remove('left');
+            right.classList.remove('right');
+            void left.offsetWidth;
+            left.classList.add('left');
+            right.classList.add('right');
+        }
+
+        function triggerRadialBloom() {
+            const bloom = document.getElementById('radialBloom');
+            bloom.style.animation = 'none';
+            void bloom.offsetWidth;
+            bloom.style.animation = 'bloomExpand 1s ease-out';
+        }
+
+        // ========== 프레젠테이션 시작 ==========
+        function startPresentation() {
+            sceneState.running = true;
+            sceneState.paused = false;
+            sceneState.spotlightIndex = 0;
+
             // UI 업데이트
             document.getElementById('startPresentation').classList.add('hidden');
             document.getElementById('controlPanel').classList.add('active');
             document.getElementById('progressContainer').classList.add('active');
-            document.getElementById('totalSlides').textContent = allPresentationData.length;
-            
-            // 헤더 숨기기
+            document.getElementById('totalSlides').textContent = allPeopleData.length;
+            document.getElementById('currentSlide').textContent = '1';
+
+            // 기존 UI 숨기기
             document.querySelector('header').style.display = 'none';
             document.querySelector('.content-area').style.display = 'none';
-            
-            // 인트로 표시
+            document.getElementById('mainwallContainer').classList.remove('active');
+
+            // 인트로 시작
+            sceneState.current = 'intro';
             showIntro();
         }
         
-        // 인트로 화면
+        // ========== 인트로 화면 ==========
         function showIntro() {
             const intro = document.getElementById('introScreen');
-            document.getElementById('introCategoryText').textContent = '존경받는 간부공무원';
+            document.getElementById('introCategoryText').textContent = '2025 경기도청';
             intro.classList.add('active');
             
-            // 인트로 파티클 생성
             createIntroParticles();
             
             setTimeout(() => {
-                // 플래시 효과
                 triggerFlash();
-                
                 setTimeout(() => {
                     intro.classList.remove('active');
-                    showSlide(0);
+                    sceneState.current = 'montage';
+                    showMontage();
                 }, 300);
             }, INTRO_DURATION - 300);
         }
@@ -1762,190 +2263,68 @@
             flash.classList.add('active');
         }
         
-        // 카테고리 전환 화면
-        function showCategoryTransition(categoryName) {
-            const transition = document.getElementById('categoryTransition');
-            document.getElementById('categoryTransitionText').textContent = categoryName;
-            transition.classList.add('active');
-            
-            setTimeout(() => {
-                // 플래시 효과
-                triggerFlash();
-                
-                setTimeout(() => {
-                    transition.classList.remove('active');
-                    showSlide(presentationIndex);
-                }, 300);
-            }, TRANSITION_DURATION - 300);
-        }
-        
-        // 슬라이드 표시
-        function showSlide(index) {
-            if (!presentationRunning) return;
-            
-            presentationIndex = index;
-            const person = allPresentationData[index];
-            
-            // 카운터 업데이트
-            document.getElementById('currentSlide').textContent = index + 1;
-            
-            // 전환 효과 추가
-            overlay.classList.remove('slide-transition');
-            void overlay.offsetWidth; // 리플로우 트리거
-            overlay.classList.add('slide-transition');
-            
-            // 오버레이 열기
-            openOverlay(person.name, person.role, person.photo, person.reason, person.category);
-            
-            // 파티클 효과
-            createTransitionParticles();
-            
-            // 프로그레스 바 시작
-            startProgress();
-            
-            // 다음 슬라이드 타이머
-            if (!presentationPaused) {
-                scheduleNextSlide();
-            }
-        }
-        
-        // 전환 파티클 효과
-        function createTransitionParticles() {
-            const container = document.getElementById('sparkle-container');
-            if (!container) return;
-            
-            // 추가 파티클 생성
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'gold-particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animation = `particleBurst ${1 + Math.random()}s ease-out forwards`;
-                particle.style.animationDelay = Math.random() * 0.3 + 's';
-                container.appendChild(particle);
-                
-                // 애니메이션 후 제거
-                setTimeout(() => particle.remove(), 2000);
-            }
-        }
-        
-        // 프로그레스 바
-        function startProgress() {
-            const progressBar = document.getElementById('progressBar');
-            progressBar.style.width = '0%';
-            
-            let progress = 0;
-            const interval = 100;
-            const increment = (interval / SLIDE_DURATION) * 100;
-            
-            clearInterval(progressTimer);
-            progressTimer = setInterval(() => {
-                if (presentationPaused) return;
-                
-                progress += increment;
-                progressBar.style.width = Math.min(progress, 100) + '%';
-                
-                if (progress >= 100) {
-                    clearInterval(progressTimer);
-                }
-            }, interval);
-        }
-        
-        // 다음 슬라이드 예약
-        function scheduleNextSlide() {
-            clearTimeout(presentationTimer);
-            presentationTimer = setTimeout(() => {
-                if (!presentationRunning || presentationPaused) return;
-                nextSlide();
-            }, SLIDE_DURATION);
-        }
-        
-        // 다음 슬라이드
+        // ========== 컨트롤 함수 ==========
         function nextSlide() {
-            if (!presentationRunning) return;
-            
-            const nextIndex = presentationIndex + 1;
-            
-            // 끝났으면 종료
-            if (nextIndex >= allPresentationData.length) {
-                stopPresentation();
-                return;
-            }
-            
-            // 카테고리 전환 체크 (간부공무원 → 도의원)
-            const currentCategory = allPresentationData[presentationIndex].category;
-            const nextCategory = allPresentationData[nextIndex].category;
-            
-            if (currentCategory !== nextCategory) {
-                presentationIndex = nextIndex;
-                closeOverlay();
-                setTimeout(() => {
-                    showCategoryTransition(nextCategory);
-                }, 500);
-            } else {
-                showSlide(nextIndex);
-            }
+            if (!sceneState.running || sceneState.current !== 'spotlight') return;
+            overlay.classList.remove('active');
+            setTimeout(() => showSpotlight(sceneState.spotlightIndex + 1), 300);
         }
-        
-        // 이전 슬라이드
+
         function prevSlide() {
-            if (!presentationRunning) return;
-            
-            const prevIndex = Math.max(0, presentationIndex - 1);
-            showSlide(prevIndex);
+            if (!sceneState.running || sceneState.current !== 'spotlight') return;
+            const prevIndex = Math.max(0, sceneState.spotlightIndex - 1);
+            overlay.classList.remove('active');
+            setTimeout(() => showSpotlight(prevIndex), 300);
         }
-        
-        // 일시정지/재생 토글
+
         function togglePause() {
-            presentationPaused = !presentationPaused;
+            if (!sceneState.running) return;
+            sceneState.paused = !sceneState.paused;
             const btn = document.getElementById('playPauseBtn');
             
-            if (presentationPaused) {
+            if (sceneState.paused) {
                 btn.textContent = '▶';
                 btn.title = '재생';
-                clearTimeout(presentationTimer);
+                clearTimeout(sceneState.timer);
+                clearInterval(sceneState.progressTimer);
             } else {
                 btn.textContent = '⏸';
                 btn.title = '일시정지';
-                scheduleNextSlide();
+                if (sceneState.current === 'spotlight') {
+                    const remaining = SPOTLIGHT_DURATION - (parseFloat(document.getElementById('progressBar').style.width) / 100 * SPOTLIGHT_DURATION);
+                    startSpotlightProgress();
+                    sceneState.timer = setTimeout(() => {
+                        if (!sceneState.paused && sceneState.running) {
+                            overlay.classList.remove('active');
+                            setTimeout(() => showSpotlight(sceneState.spotlightIndex + 1), 300);
+                        }
+                    }, remaining);
+                }
             }
         }
-        
-        // 프레젠테이션 종료
+
         function stopPresentation() {
-            presentationRunning = false;
-            presentationPaused = false;
-            
-            clearTimeout(presentationTimer);
-            clearInterval(progressTimer);
-            
-            // UI 복원
-            document.getElementById('startPresentation').classList.remove('hidden');
-            document.getElementById('controlPanel').classList.remove('active');
-            document.getElementById('progressContainer').classList.remove('active');
-            document.getElementById('introScreen').classList.remove('active');
-            document.getElementById('categoryTransition').classList.remove('active');
-            
-            document.querySelector('header').style.display = '';
-            document.querySelector('.content-area').style.display = '';
-            
-            closeOverlay();
-            
-            // 플레이 버튼 리셋
-            document.getElementById('playPauseBtn').textContent = '⏸';
-            document.getElementById('playPauseBtn').title = '일시정지';
+            sceneState.running = false;
+            sceneState.paused = false;
+            clearTimeout(sceneState.timer);
+            clearInterval(sceneState.progressTimer);
+            resetToMainWall();
         }
-        
-        // 스페이스바로 일시정지/재생
+
+        // 키보드 단축키
         document.addEventListener('keydown', (e) => {
-            if (!presentationRunning) return;
-            
+            if (!sceneState.running) return;
             if (e.code === 'Space') {
                 e.preventDefault();
                 togglePause();
             } else if (e.key === 'Escape') {
                 stopPresentation();
             }
+        });
+
+        // ========== 초기화 ==========
+        window.addEventListener('DOMContentLoaded', () => {
+            initMainWall();
         });
     </script>
 
