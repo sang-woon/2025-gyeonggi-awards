@@ -2322,12 +2322,19 @@
         });
 
         // ========== 초기화 ==========
-        window.addEventListener('DOMContentLoaded', () => {
+        function initializePage() {
             initMainWall();
             // 초기 로드 시 MainWall을 기본 화면으로 표시
             document.body.classList.add('mainwall-mode');
             document.getElementById('mainwallContainer').classList.add('active');
-        });
+        }
+        
+        // 즉시 실행 (DOM이 준비되면)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
     </script>
 
     <!-- 모바일 스와이프 기능 스크립트 -->
