@@ -2330,7 +2330,23 @@
             initMainWall();
             // 초기 로드 시 MainWall을 기본 화면으로 표시
             document.body.classList.add('mainwall-mode');
-            document.getElementById('mainwallContainer').classList.add('active');
+            // (구버전 호환) 남아있는 active 클래스는 더 이상 사용하지 않지만, 있어도 무방
+
+            // 안전장치: 시작 버튼 누르기 전에는 MainWall이 절대 사라지지 않도록 강제 유지
+            // (일부 환경/TV 브라우저에서 예기치 않은 스타일/클래스 변경이 발생하는 케이스 대응)
+            if (!window.__mainwallWatchdogStarted) {
+                window.__mainwallWatchdogStarted = true;
+                setInterval(() => {
+                    if (typeof sceneState !== 'undefined' && sceneState.running) return;
+                    document.body.classList.add('mainwall-mode');
+                    // 혹시 남아있을 수 있는 전체화면 레이어들을 강제 비활성화
+                    const ids = ['introScreen', 'categoryTransition', 'montageOverlay', 'endCard', 'overlay'];
+                    ids.forEach((id) => {
+                        const el = document.getElementById(id);
+                        if (el) el.classList.remove('active');
+                    });
+                }, 250);
+            }
         }
         
         // 즉시 실행 (DOM이 준비되면)
