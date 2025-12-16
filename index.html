@@ -1934,7 +1934,7 @@
             overlay.style.backgroundImage = `url('${photo}')`;
         }
 
-        // 기존 openOverlay 수정 - 인덱스 저장
+        // 기존 openOverlay 수정 - 인덱스 저장 및 반짝임 효과
         const originalOpenOverlay = openOverlay;
         openOverlay = function(name, role, photo, reason, category) {
             // 현재 인덱스 찾기
@@ -1950,6 +1950,7 @@
             currentCategory = category;
             
             originalOpenOverlay(name, role, photo, reason, category);
+            setTimeout(createSparkles, 100);
         };
 
         // 키보드 좌우 화살표로도 이동 가능
@@ -1985,19 +1986,6 @@
             }
         }
 
-        // 오버레이 열릴 때 반짝임 생성
-        const originalOpenForSparkles = originalOpenOverlay;
-        window.openOverlayForSparkles = function(name, role, photo, reason, category) {
-            originalOpenForSparkles(name, role, photo, reason, category);
-            setTimeout(createSparkles, 100);
-        };
-        
-        // openOverlay를 래핑
-        const originalOpenOverlayWrapper = openOverlay;
-        openOverlay = function(name, role, photo, reason, category) {
-            originalOpenOverlayWrapper(name, role, photo, reason, category);
-            setTimeout(createSparkles, 100);
-        };
 
         // 초기화
         createSparkles();
